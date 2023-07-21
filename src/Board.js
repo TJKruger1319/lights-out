@@ -41,8 +41,16 @@ function Board({ nrows, ncols, chanceLightStartsOn }) {
     return (Math.random() < 0.5);
   }
 
-  function hasWon() {
-    // TODO: check the board in state to determine whether the player has won.
+  function hasWon(board) {
+    // check the board in state to determine whether the player has won.
+    for (let innerBoard of board) {
+      for (let i of innerBoard) {
+        if (i === true) {
+          return false;
+        }
+      }
+    }
+    return <winner/>;
   }
 
   function flipCellsAround(coord) {
@@ -57,21 +65,41 @@ function Board({ nrows, ncols, chanceLightStartsOn }) {
         }
       };
 
-      // TODO: Make a (deep) copy of the oldBoard
-
-      // TODO: in the copy, flip this cell and the cells around it
-
-      // TODO: return the copy
+      // Make a (deep) copy of the oldBoard
+      let deepBoard = oldBoard.map(b => b)
+      // in the copy, flip this cell and the cells around it
+      flipCell(y, x, deepBoard);
+      // return the copy
+      return deepBoard;
     });
   }
 
   // if the game is won, just show a winning msg & render nothing else
 
-  // TODO
+  function winner() {
+    document.body.innerHTML = '';
+    return (
+      <p>Winner!</p>
+    );
+  }
 
   // make table board
 
-  // TODO
+    return (
+      <table>
+        <tbody>
+          <tr>
+            {board[0].map((val) => <Cell flipCellsAroundMe={flipCellsAround} isLit={val}/>)}
+          </tr>
+          <tr>
+            {board[1].map((val) => <Cell flipCellsAroundMe={flipCellsAround} isLit={val}/>)}
+          </tr>
+          <tr>
+            {board[2].map((val) => <Cell flipCellsAroundMe={flipCellsAround} isLit={val}/>)}
+          </tr>
+        </tbody>
+      </table>
+    );
 }
 
 export default Board;
